@@ -1,1 +1,1 @@
-Not intended for use. Made in collaboration with Nokia for training.
+Intended for training purposes, not professional use. Made in colalboration with Nokia
