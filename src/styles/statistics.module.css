@@ -1,0 +1,130 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+.statisticsContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.translateHistory {
+    width: 60%;
+}
+
+.pieChartContainer {
+    width: 35%;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pieChartContainer canvas {
+    transform: scale(0.8); /* Scale down to 80% */
+    transform-origin: top; /* Ensure the scaling happens from the top */
+}
+
+.pieChartContainer h3 {
+    margin-bottom: 20px;
+    color: #36845c;
+    text-transform: uppercase;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #36845c;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.transFile {
+    cursor: pointer;
+    color: #36845c;
+    font-weight: bold;
+}
+
+.transFile:hover {
+    text-decoration: underline;
+}
+
+.transLanguages {
+    cursor: pointer;
+    color: #555;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.transLanguages:hover {
+    background-color: #36845c;
+    color: white;
+    border-color: #36845c;
+}
+
+.filler {
+    height: 10px;
+    background-color: transparent;
+}
+
+
+.fifty{
+    padding: 30px 0px 0px !important;
+}
+.thirty{
+    width: 30%;
+    padding-left: 15px;
+}
+.content{
+    text-align: justify;
+}
+.transDownload{
+    text-align: right;
+    padding: 0px 40px;
+}
+.transFile{
+    border-right: 2px solid darkgray;
+}
+.transLanguages{
+    padding-top: 5px;
+}
+.transLanguages:hover, .transFile:hover{
+    cursor: pointer;
+    color: orange;
+}
+.filler{
+    padding: 15px 0px;
+}
+
+#fcolumn{
+    border-right: 2px solid darkgray;
+    padding: 0px;
+ }
+ #lcolumn{
+    padding: 0px 40px;
+    text-align: right;
+ }

@@ -1,0 +1,286 @@
+/* General Styles (unchanged) */
+body {
+    background: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+header {
+    width: 100%;
+    display: flex; /* Use Flexbox for layout */
+    justify-content: space-between; /* Align items to the edges */
+    align-items: center; /* Align items vertically in the center */
+    padding: 20px; /* Fixed padding for initial layout */
+    position: relative; /* To position the menu absolutely */
+    box-sizing: border-box;
+}
+
+select {
+    font-size: 18px; /* Fixed font size for initial layout */
+}
+
+.colHeader {
+    padding-top: 20px; /* Fixed padding for initial layout */
+    padding-bottom: 0;
+}
+
+.fifty {
+    padding: 30px 0 0 !important; /* Fixed padding for initial layout */
+}
+
+.active {
+    font-size: 45px; /* Fixed font size for initial layout */
+    color: #82cea7;;
+    margin: 0 0 0 -15px; /* Fixed margin for initial layout */
+}
+
+.unactive {
+    margin: 0 0 0 -10px; /* Fixed margin for initial layout */
+    font-size: 40px; /* Fixed font size for initial layout */
+    transition: color 100s, font-size 3s;
+}
+
+.unactive:hover {
+    cursor: pointer;
+    font-size: 45px; /* Fixed font size for initial layout */
+    color: white;
+}
+
+.selcDoc{
+    margin-bottom: 15px; /* Fixed margin for initial layout */
+    width: 100%;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.lan {
+    width: 100%;
+}
+
+.header {
+    margin-bottom: -50px; /* Fixed margin for initial layout */
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+
+#normal {
+    padding: 30px 0; /* Fixed padding for initial layout */
+}
+
+#drip {
+    margin-top: 40px; /* Fixed margin for initial layout */
+    z-index: -99999;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0;
+    margin: -60px 0 0;
+    transform: scaleX(-1);
+}
+#uploadBttn{
+    width: 3.2vw;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 5px;
+    transition: width 0.5s ease;
+    margin-bottom: 450px;
+    margin-right: 98px;
+}
+#uploadBttn:hover{
+    cursor: pointer;
+    width: 4vw;
+}
+
+
+@keyframes rotate {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+#logo {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 150px; /* Fixed size for initial layout */
+    width: 150px; /* Fixed size for initial layout */
+    z-index: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(-50%);
+    border-radius: 50%;
+}
+
+#logo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    background-color: #36845c;
+    background-image: linear-gradient(#36845c, #83cea7, #36845c);
+    animation: rotate 4s linear infinite;
+    border-radius: 50%;
+}
+
+#logo img {
+    width: 100%;
+    height: auto;
+}
+#switch {
+    height: 70px; /* Fixed size for initial layout */
+    margin-top: -20px; /* Fixed margin for initial layout */
+}
+
+#switch:hover {
+    transform: scaleX(-1);
+    cursor: pointer;
+}
+
+#translateBttn {
+    font-size: 30px; /* Fixed font size for initial layout */
+    font-family: "Century Gothic";
+    font-weight: bold;
+    padding: 10px 70px; /* Fixed padding for initial layout */
+    margin: 20px 0; /* Fixed margin for initial layout */
+}
+
+#translateBttn:hover {
+    font-stretch: expanded;
+}
+
+#docTrans {
+    width: 85%;
+    margin-top: 60px; /* Fixed margin for initial layout */
+    color: black;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 50px; /* Fixed size for initial layout */
+    height: auto;
+}
+
+.menu-toggle {
+    display: none; /* Hide on larger screens */
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.statistics-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%; /* Position below the header */
+    right: 20px; /* Fixed positioning for initial layout */
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px; /* Fixed padding for initial layout */
+    width: 200px; /* Fixed width for initial layout */
+}
+
+.statistics-menu h3 {
+    margin-top: 0;
+}
+
+/* Show the menu when the button is clicked */
+.menu-toggle:checked + .statistics-menu {
+    display: block;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 1000px) {
+    .menu-toggle {
+        display: block; /* Show menu button on smaller screens */
+    }
+
+    .fifty {
+        padding: 2vw 0 5vw !important; /* Use viewport units for padding */
+    }
+
+    #logo {
+        width: 15vw; /* Use viewport units for width */
+        height: 15vw; /* Use viewport units for height */
+    }
+    #content {
+        margin-top: 20vw; /* Use viewport units for margin */
+        margin-left: 5vw; /* Use viewport units for margin */
+        margin-right: 2vw; /* Use viewport units for margin */
+    }
+
+    #translateBttn {
+        font-size: 2.4vw; /* Use viewport units for font size */
+    }
+
+    .active {
+        font-size: 2.5vw; /* Use viewport units for font size */
+    }
+
+    .unactive {
+        font-size: 2.5vw; /* Use viewport units for font size */
+        transition: color 100s, font-size 3s;
+    }
+    .unactive:hover {
+        cursor: pointer;
+        font-size: 2.9vw; /* Fixed font size for initial layout */
+        color: white;
+    }
+}
+
+/* Additional Media Queries for even smaller screens */
+@media (max-width: 480px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .active {
+        font-size: 2.5vw; /* Use viewport units for font size */
+        margin: 1;
+        position: relative; /* Enable positioning */
+        top: 30px;         
+    }
+
+    .unactive {
+        font-size: 2vw; /* Use viewport units for font size */
+        margin: 0;
+        position: relative; /* Enable positioning */
+        top: 30px;         
+    }
+
+    #logo {
+        width: 15vw; /* Use viewport units for width */
+        height: 15vw; /* Use viewport units for height */
+    }
+
+    #translateBttn {
+        font-size: 2vw; /* Use viewport units for font size */
+        padding: 1vw 5vw; /* Use viewport units for padding */
+    }
+
+    #content {
+        margin-left: 5vw; /* Use viewport units for margin */
+        margin-right: 5vw; /* Use viewport units for margin */
+    }
+
+    .statistics-menu {
+        width: 15vw; /* Use viewport units for width */
+        right: 1vw; /* Use viewport units for positioning */
+    }
+
+    .statistics-menu h3 {
+        font-size: 1vw; /* Use viewport units for font size */
+    }
+}

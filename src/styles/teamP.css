@@ -1,0 +1,274 @@
+/* ||GENERAL UTILITIES */
+@import url(https://db.onlinewebfonts.com/c/ef6bdf5ef216552c7e9869841e891ca0?family=Arial+Rounded+MT+Bold);
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+html{
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+body {
+    font-family: "Century Gothic";
+    color: grey;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+h1{
+    font-size: 3em;
+    color: #82cea7;
+}
+h1, h2{
+    font-family: "Arial Rounded MT Bold";
+    font-stretch: condensed;
+}
+hr{
+    width: 40%;
+    display: inline-block;
+    position: relative;
+}
+button{
+    padding: 10px 20px;
+    font-size: 20px;
+    font-family: "Arial Rounded MT Bold";
+    background: #36845c;
+    color: white;
+    border: none;
+}
+button:hover{
+    cursor: pointer;
+    background-color: #40a471;
+}
+.parent-container {
+    position: relative;
+    height: 1px;
+  }
+  
+  .identifier {
+    position: absolute;
+  }
+textarea{
+    font-family: "Century Gothic";
+    color: grey;
+    resize: none;
+    width: 100%;
+    height: 300px;
+    padding: 10px;
+}
+header {
+    width: 100%;
+    display: flex; /* Use Flexbox for layout */
+    justify-content: space-between; /* Align items to the edges */
+    align-items: center; /* Align items vertically in the center */
+    padding: 20px; /* Fixed padding for initial layout */
+    position: relative; /* To position the menu absolutely */
+    box-sizing: border-box;
+}
+select{
+    color: grey;
+    font-family: "Century Gothic";
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    width: 200px;
+}
+a{
+    text-decoration: none;
+}
+
+/* ||SITE WIDE */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.thirty {
+    float: left;
+    width: 33.33%;
+    height: 100%;
+}
+.fifty{
+    float: left;
+    width: 50%;
+    padding: 50px;
+}
+.seventy{
+    float: left;
+    width: 70%;
+}
+.greenBttn{
+    background-color: #82cea7;
+    z-index: 1000;
+}
+.banner{
+    background-color: #f7f2fa;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 9999;
+}
+
+/* ||MORE THAN ONE */
+#userImg{
+    border-radius: 100px;
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    object-fit: scale-down;
+}
+.bannerdesc{          /*Home and Bio*/
+    text-align: right;
+    float: right;
+    padding-right: 50px;
+}
+
+/*TRANSLATE AND STATISTACKS*/
+@keyframes rotate {
+	100% {
+		transform: rotate(1turn);
+	}
+}
+
+.header{
+    margin-bottom: -50px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+.active {
+    font-size: 45px; /* Fixed font size for initial layout */
+    color: #82cea7;;
+    margin: 0 0 0 -15px; /* Fixed margin for initial layout */
+}
+
+.unactive {
+    margin: 0 0 0 -10px; /* Fixed margin for initial layout */
+    font-size: 40px; /* Fixed font size for initial layout */
+    transition: color 100s, font-size 3s;
+}
+.unactive:hover {
+    cursor: pointer;
+    font-size: 45px; /* Fixed font size for initial layout */
+    color: white;
+}
+.drip{
+    margin-top: 40px; /* Fixed margin for initial layout */
+    z-index: -99999;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0;
+    margin: -60px 0 0;
+}
+.content {
+    margin-top: 260px; /* Fixed margin for initial layout */
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.identifier{
+    text-align: left;
+    margin: -40px 0px 40px;
+    color: #36845c;
+}
+
+#logo{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 150px;
+    width: 150px;
+    z-index: 0;
+	overflow: hidden;
+	display: flex;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(-50%);
+    border-radius: 50%;
+}
+#logo::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -2;
+        width: 100%;
+        height: 100%;
+        background-color: #36845c;
+        background-repeat: no-repeat;
+        background-size: 50% 50%, 50% 50%;
+        background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+        background-image: linear-gradient(#36845c, #83cea7, #36845c);
+        animation: rotate 4s linear infinite;
+        border-radius: 50%;
+    }
+ #logo img{
+    width: 100%;
+    height: auto;
+}  
+
+
+/* Media Query for smaller screens */
+@media (max-width: 1000px) {
+
+    .fifty {
+        padding: 2vw 0 5vw !important; /* Use viewport units for padding */
+    }
+    .content {
+        margin-top: 20vw; /* Use viewport units for margin */
+        margin-left: 5vw; /* Use viewport units for margin */
+        margin-right: 2vw; /* Use viewport units for margin */
+    }
+    .active {
+        font-size: 2.5vw; /* Use viewport units for font size */
+    }
+    .unactive {
+        font-size: 2.5vw; /* Use viewport units for font size */
+        transition: color 100s, font-size 3s;
+    }
+    .unactive:hover {
+        cursor: pointer;
+        font-size: 2.9vw; /* Fixed font size for initial layout */
+        color: white;
+    }
+    #logo {
+        width: 15vw; /* Use viewport units for width */
+        height: 15vw; /* Use viewport units for height */
+    }
+}
+
+/* Additional Media Queries for even smaller screens */
+@media (max-width: 480px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+    .active {
+        font-size: 2.5vw; /* Use viewport units for font size */
+        margin: 1;
+        position: relative; /* Enable positioning */
+        top: 30px;         
+    }
+    .unactive {
+        font-size: 2vw; /* Use viewport units for font size */
+        margin: 0;
+        position: relative; /* Enable positioning */
+        top: 30px;         
+    }
+    .content {
+        margin-left: 5vw; /* Use viewport units for margin */
+        margin-right: 5vw; /* Use viewport units for margin */
+    }
+    #logo {
+        width: 15vw; /* Use viewport units for width */
+        height: 15vw; /* Use viewport units for height */
+    }
+}
