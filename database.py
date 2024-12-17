@@ -120,7 +120,6 @@ def download_file(user_id, og_file_name, trans_lan):
     
     file_data = BytesIO(file_content)
     
-    # Seek to the beginning of the BytesIO object
     file_data.seek(0)
     
     return send_file(file_data, as_attachment=True, download_name=file_name)

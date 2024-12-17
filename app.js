@@ -14,7 +14,7 @@ app.post('/convert-html-to-docx', upload.single('htmlFile'), (req, res) => {
         const docxFilePath = `${htmlFilePath}.docx`;
         const command = `pandoc -s ${htmlFilePath} -o ${docxFilePath}`;
 
-        exec(command, (error, stdout, stderr) => {
+        exec(command, (error) => {
             if (error) {
                 console.error('Error converting HTML to DOCX:', error);
                 res.status(500).send('Error converting HTML to DOCX');

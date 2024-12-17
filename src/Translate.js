@@ -175,7 +175,7 @@ function Translate() {
                 type = "text";
             }
             blobResponse = await convertToDoc(type, mimeType);
-            saveAs(blobResponse, `Translated_${file.name.replace('.html', extension)}`);
+            saveAs(blobResponse, `Translated_${file.name.replace('.html', extension)}`); // Not sure if needed
         } catch (error) {
             console.error(error);
             alert("Error occurred during conversion.");
