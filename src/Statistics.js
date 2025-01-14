@@ -17,6 +17,10 @@ function Statistics() {
     const [languageStats, setLanguageStats] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showTeamDialog, setShowTeamDialog] = useState(false);
+    const [teamName, setTeamName] = useState('');
+    const [teamId, setTeamId] = useState(null);
+    const [joinTeamId, setJoinTeamId] = useState('');
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -64,6 +68,25 @@ function Statistics() {
         }
     }, [userId]);
 
+    useEffect(() => {
+        const checkTeamMembership = async () => {
+            if (userId) {
+                try {
+                    const response = await axios.post('http://localhost:5000/check-team', {
+                        userId
+                    });
+                    if (response.data.teamId) {
+                        setTeamId(response.data.teamId);
+                    }
+                } catch (error) {
+                    console.error('Error checking team membership:', error);
+                }
+            }
+        };
+
+        checkTeamMembership();
+    }, [userId]);
+
     const calculateLanguageStats = (data) => {
         const languageCount = {};
         data.forEach(row => {
@@ -93,6 +116,36 @@ function Statistics() {
             saveAs(blob, filename);
         } catch (error) {
             console.error('Error downloading file:', error);
+        }
+    };
+
+    const handleCreateTeam = async () => {
+        try {
+            const response = await axios.post('http://localhost:5000/create-team', {
+                teamName,
+                userId
+            });
+            setTeamId(response.data.teamId);
+            setShowTeamDialog(false);
+            alert('Team created successfully!');
+        } catch (error) {
+            console.error('Error creating team:', error);
+            alert('Error creating team');
+        }
+    };
+
+    const handleJoinTeam = async () => {
+        try {
+            await axios.post('http://localhost:5000/join-team', {
+                teamId: joinTeamId,
+                userId
+            });
+            setTeamId(joinTeamId);
+            setShowTeamDialog(false);
+            alert('Joined team successfully!');
+        } catch (error) {
+            console.error('Error joining team:', error);
+            alert(error.response?.data?.message || 'Error joining team');
         }
     };
 
@@ -187,6 +240,81 @@ function Statistics() {
                                 <h3>Language Distribution</h3>
                                 <Pie data={pieData} />
                             </div>
+                            {!teamId ? (
+                                <button onClick={() => setShowTeamDialog(true)} className={styles.teamButton}>
+                                    Create/Join Team
+                                </button>
+                            ) : (
+                                <div className={styles.teamStatus}>
+                                    <p>Team Member - ID: {teamId}</p>
+                                    <button 
+                                        onClick={async () => {
+                                            // Add confirmation dialog
+                                            if (window.confirm('Are you sure you want to leave this team?')) {
+                                                try {
+                                                    await axios.post('http://localhost:5000/leave-team', {
+                                                        userId
+                                                    });
+                                                    setTeamId(null);
+                                                    alert('Left team successfully!');
+                                                } catch (error) {
+                                                    console.error('Error leaving team:', error);
+                                                    alert(error.response?.data?.message || 'Error leaving team');
+                                                }
+                                            }
+                                        }}
+                                        className={styles.leaveTeamButton}
+                                    >
+                                        Leave Team
+                                    </button>
+                                </div>
+                            )}
+
+                            {showTeamDialog && (
+                                <div className={styles.teamDialog}>
+                                    <button 
+                                        className={styles.closeButton}
+                                        onClick={() => setShowTeamDialog(false)}
+                                    >
+                                        ×
+                                    </button>
+                                    <h3>Team Options</h3>
+                                    
+                                    <div className={styles.teamDialogSection}>
+                                        <h4>Create New Team</h4>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter team name"
+                                            value={teamName}
+                                            onChange={(e) => setTeamName(e.target.value)}
+                                            className={styles.teamDialogInput}
+                                        />
+                                        <button 
+                                            onClick={handleCreateTeam}
+                                            className={styles.teamDialogButton}
+                                        >
+                                            Create Team
+                                        </button>
+                                    </div>
+
+                                    <div className={styles.teamDialogSection}>
+                                        <h4>Join Existing Team</h4>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter team ID to join"
+                                            className={styles.teamDialogInput}
+                                            value={joinTeamId}
+                                            onChange={(e) => setJoinTeamId(e.target.value)}
+                                        />
+                                        <button 
+                                            className={styles.teamDialogButton}
+                                            onClick={handleJoinTeam}
+                                        >
+                                            Join Team
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <p>It looks like you have no data yet. Start translating to save your data!</p>

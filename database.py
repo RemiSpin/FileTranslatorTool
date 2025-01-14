@@ -2,10 +2,11 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import User, OriginalFile, TranslatedFile
-from flask import send_file
+from models import User, OriginalFile, TranslatedFile, Team, TeamMember
+from flask import send_file, request, jsonify
 from io import BytesIO
 import io
+from datetime import datetime
 
 # MySQL Database URL Format: mysql://username:password@host:port/database_name
 db_url = 'mysql://root@localhost:3306/team_project'
@@ -67,25 +68,43 @@ def add_original_file(user_id, og_file, src_lang, upload_date):
         return "Sum Ting Wong"
 
 def get_users_files(user_id):
+    # Get user's own files
     original_files = session.query(OriginalFile).filter_by(user_id=user_id).all()
-    
     user_files = {}
 
+    # Add user's own files
     for file in original_files:
         trans_files = session.query(TranslatedFile).filter_by(og_file_id=file.file_id).all()
         translated_languages = [trans_file.translated_language for trans_file in trans_files]
         user_files[file.file_name] = translated_languages
-  
-    table_data = []
 
+    # Get user's team ID if they're in a team
+    team_member = session.query(TeamMember).filter_by(user_id=user_id).first()
+    if team_member:
+        # Get all team members except current user
+        team_members = session.query(TeamMember).filter(
+            TeamMember.team_id == team_member.team_id,
+            TeamMember.user_id != user_id
+        ).all()
+        
+        # Get files from each team member
+        for member in team_members:
+            member_files = session.query(OriginalFile).filter_by(user_id=member.user_id).all()
+            for file in member_files:
+                trans_files = session.query(TranslatedFile).filter_by(og_file_id=file.file_id).all()
+                translated_languages = [trans_file.translated_language for trans_file in trans_files]
+                # Add "(Team)" suffix to team members' files
+                user_files[f"{file.file_name} (Team)"] = translated_languages
+
+    # Convert to table format
+    table_data = []
     for key, items in user_files.items():
-        # Create a row for each item related to the key
-            items_string = ', '.join(items)
-            row = {'Key': key, 'Item': items_string}
-            table_data.append(row)
+        items_string = ', '.join(items)
+        row = {'Key': key, 'Item': items_string}
+        table_data.append(row)
 
     return table_data
-    
+
 def get_users_og_files(user_id):
     original_files = session.query(OriginalFile).filter_by(user_id=user_id).all()
     file_names = [file.file_name for file in original_files]
@@ -123,4 +142,65 @@ def download_file(user_id, og_file_name, trans_lan):
     file_data.seek(0)
     
     return send_file(file_data, as_attachment=True, download_name=file_name)
+
+def create_team(team_name, user_id):
+    team = Team(team_name=team_name, created_date=datetime.now())
+    session.add(team)
+    session.commit()
     
+    member = TeamMember(team_id=team.team_id, user_id=user_id, join_date=datetime.now())
+    session.add(member)
+    session.commit()
+    return team.team_id
+
+def join_team(team_id, user_id):
+    # Convert string inputs to integers
+    try:
+        team_id = int(team_id)
+        user_id = int(user_id)
+    except ValueError:
+        raise Exception("Invalid team ID or user ID format")
+
+    # Check if team exists
+    team = session.query(Team).filter_by(team_id=team_id).first()
+    if not team:
+        raise Exception("Team does not exist")
+
+    # Check if user is already in team
+    existing_member = session.query(TeamMember).filter_by(
+        team_id=team_id, 
+        user_id=user_id
+    ).first()
+    
+    if existing_member:
+        raise Exception("User is already a member of this team")
+        
+    member = TeamMember(team_id=team_id, user_id=user_id, join_date=datetime.now())
+    session.add(member)
+    session.commit()
+
+def leave_team(user_id):
+    try:
+        member = session.query(TeamMember).filter_by(user_id=user_id).first()
+        if not member:
+            raise Exception("User is not a member of any team")
+        
+        session.delete(member)
+        session.commit()
+    except Exception as e:
+        session.rollback()
+        raise e
+
+def get_team_files(team_id):
+    team_members = session.query(TeamMember).filter_by(team_id=team_id).all()
+    all_files = []
+    for member in team_members:
+        files = get_users_files(member.user_id)
+        all_files.extend(files)
+    return all_files
+
+def check_team_membership(user_id):
+    member = session.query(TeamMember).filter_by(user_id=user_id).first()
+    if member:
+        return member.team_id
+    return None

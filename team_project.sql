@@ -64,6 +64,34 @@ CREATE TABLE `translated_files` (
   `upload_date` date NOT NULL COMMENT 'Stores the date of the translation'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `teams`
+--
+
+CREATE TABLE `teams` (
+  `team_id` int(11) NOT NULL AUTO_INCREMENT,
+  `team_name` varchar(50) NOT NULL,
+  `created_date` datetime NOT NULL,
+  PRIMARY KEY (`team_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `team_members`
+--
+
+CREATE TABLE `team_members` (
+  `team_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `join_date` datetime NOT NULL,
+  PRIMARY KEY (`team_id`, `user_id`),
+  FOREIGN KEY (`team_id`) REFERENCES `teams` (`team_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `login` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Indexes for dumped tables
 --

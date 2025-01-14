@@ -52,3 +52,20 @@ class TranslatedFile(Base):
 
     def __repr__(self):
         return f'<TranslatedFile(file_id={self.file_id}, og_file_id={self.og_file_id}, file_content={self.file_content}, translated_language={self.translated_language}, upload_date={self.upload_date})>'
+
+class Team(Base):
+    __tablename__ = 'teams'
+    
+    team_id = Column(Integer, primary_key=True, autoincrement=True)
+    team_name = Column(String(50), nullable=False)
+    created_date = Column(DateTime, nullable=False)
+    members = relationship("TeamMember", back_populates="team")
+
+class TeamMember(Base):
+    __tablename__ = 'team_members'
+    
+    team_id = Column(Integer, ForeignKey('teams.team_id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('login.user_id'), primary_key=True)
+    join_date = Column(DateTime, nullable=False)
+    team = relationship("Team", back_populates="members")
+    user = relationship("User")

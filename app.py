@@ -2,10 +2,9 @@ import pandas as pd
 import io
 import os
 import jwt
-import datetime
+from datetime import datetime, timedelta
 import base64
-from models import OriginalFile, TranslatedFile, User
-from werkzeug.utils import secure_filename
+from models import OriginalFile,  User
 from googletrans import Translator
 from docx import Document
 from flask_cors import cross_origin
@@ -25,7 +24,7 @@ def create_token(user_id):
     token = jwt.encode(
         {
             'user_id': user_id,
-            'exp': datetime.datetime.now() + datetime.timedelta(hours=24)
+            'exp': datetime.now() + timedelta(hours=24)
         },
         app.config['SECRET_KEY'],
         algorithm='HS256'
@@ -57,7 +56,7 @@ def signin():
     response = validate_user(email, credential)
     if(response == 1):
         return jsonify({'message': 'Invalid credentials'}), 401
-    elif response == 2:
+    elif (response == 2):
        return jsonify({'message': 'User not found'}), 404
     else: 
         user = session.query(User).filter_by(email=email).first()
@@ -146,23 +145,22 @@ def upload():
         if file_already:
             og_file_id = file_already.file_id
         else:
-            # Add the original file if it does not exist
-            add_original_file(user_id, og_file, src_lang, datetime.datetime.now())
+            # Change datetime.datetime.now() to datetime.now()
+            add_original_file(user_id, og_file, src_lang, datetime.now())
             file_already = session.query(OriginalFile).filter_by(file_name=og_file_name, user_id=user_id).first()
             if file_already:
                 og_file_id = file_already.file_id
             else:
                 return jsonify(status='error', message='Failed to add original file'), 500
         
-        # Add the translated file
-        success = add_trans_file(og_file_id, trans_file, dest_lang, datetime.datetime.now())
-        return jsonify(status = 'Status', message=success);
+        # Add the translated file and change datetime.datetime.now() to datetime.now()
+        success = add_trans_file(og_file_id, trans_file, dest_lang, datetime.now())
+        return jsonify(status = 'Status', message=success)
     
     except Exception as e:
-        session.rollback()  # Rollback the transaction if an error occurs
+        session.rollback()
         print("Error:", e)
         return jsonify(status='error', message=str(e)), 500
-
 
 @app.route('/populate', methods=['POST'])
 def populate():
@@ -191,6 +189,44 @@ def download():
         print("Error:", e)
         return jsonify(status='error', message=str(e)), 500
 
+@app.route('/create-team', methods=['POST'])
+def create_team_endpoint():
+    data = request.json
+    team_name = data.get('teamName')
+    user_id = data.get('userId')
+    team_id = create_team(team_name, user_id)
+    return jsonify({'teamId': team_id})
+
+@app.route('/join-team', methods=['POST'])
+def join_team_endpoint():
+    try:
+        data = request.json
+        team_id = data.get('teamId')
+        user_id = data.get('userId')
+        join_team(team_id, user_id)
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 400
+
+@app.route('/check-team', methods=['POST'])
+def check_team_endpoint():
+    try:
+        data = request.json
+        user_id = data.get('userId')
+        team_id = check_team_membership(user_id)
+        return jsonify({'teamId': team_id})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 400
+
+@app.route('/leave-team', methods=['POST'])
+def leave_team_endpoint():
+    try:
+        data = request.json
+        user_id = data.get('userId')
+        leave_team(user_id)
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 400
    
 if __name__ == '__main__':
     app.run(debug=True)
