@@ -65,7 +65,7 @@ def add_original_file(user_id, og_file, src_lang, upload_date):
     except Exception as e:
         session.rollback()  # Rollback the transaction if an error occurs
         print("Error:", e)
-        return "Sum Ting Wong"
+    return "An error occurred while saving the file"
 
 def get_users_files(user_id):
     # Get user's own files

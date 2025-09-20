@@ -78,7 +78,7 @@ def getname():
         user_data = {'name': user.first_name}
         return jsonify(user_data)
     else:
-        return jsonify("Idk bro the user ID can't be found")
+        return jsonify({'error': 'User not found'}), 404
 
 @app.route('/translate', methods=['POST'])
 def translate():
